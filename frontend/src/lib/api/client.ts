@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthStore } from '@/lib/store/auth.store';
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1',
+  baseURL: 'https://sage-n74a.onrender.com/api/v1',
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 });
