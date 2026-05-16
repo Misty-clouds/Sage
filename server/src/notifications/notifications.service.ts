@@ -31,8 +31,8 @@ export class NotificationsService {
     label: string;           // used in log messages only
   }): Promise<void> {
     if (!this.resend) {
-      this.logger.warn(`[${opts.label}] Skipped — RESEND_API_KEY not configured (to: ${opts.to})`);
-      return;
+      this.logger.error(`[${opts.label}] Cannot send — RESEND_API_KEY not configured (to: ${opts.to})`);
+      throw new Error('Email service not configured. Set RESEND_API_KEY.');
     }
 
     const { data, error } = await this.resend.emails.send({
@@ -43,11 +43,10 @@ export class NotificationsService {
     });
 
     if (error) {
-      // Resend v6 puts all errors here instead of throwing
       this.logger.error(
         `[${opts.label}] Failed to deliver to ${opts.to} — ${error.name}: ${error.message}`,
       );
-      return;
+      throw new Error(`${error.name}: ${error.message}`);
     }
 
     this.logger.log(`[${opts.label}] Delivered to ${opts.to} — id: ${data?.id}`);

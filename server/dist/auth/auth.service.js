@@ -41,6 +41,7 @@ var __importStar = (this && this.__importStar) || (function () {
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var AuthService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
@@ -54,11 +55,12 @@ const OTP_TTL_MINUTES = 10;
 function generateOtp() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
-let AuthService = class AuthService {
+let AuthService = AuthService_1 = class AuthService {
     usersService;
     jwtService;
     notificationsService;
     employeesService;
+    logger = new common_1.Logger(AuthService_1.name);
     constructor(usersService, jwtService, notificationsService, employeesService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
@@ -116,7 +118,13 @@ let AuthService = class AuthService {
         const code = generateOtp();
         const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000);
         await this.usersService.setOtp(String(user._id), code, expiresAt);
-        this.notificationsService.sendOtpEmail(user.email, user.name, code).catch(() => null);
+        try {
+            await this.notificationsService.sendOtpEmail(user.email, user.name, code);
+        }
+        catch (err) {
+            this.logger.error(`OTP email failed for ${user.email}`, err.message);
+            throw new common_1.InternalServerErrorException('Failed to send sign-in code. Please try again.');
+        }
         return { message: 'If that email is registered, a code has been sent.' };
     }
     async verifyOtp(dto) {
@@ -142,7 +150,7 @@ let AuthService = class AuthService {
     }
 };
 exports.AuthService = AuthService;
-exports.AuthService = AuthService = __decorate([
+exports.AuthService = AuthService = AuthService_1 = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [users_service_1.UsersService,
         jwt_1.JwtService,

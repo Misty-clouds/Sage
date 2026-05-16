@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -24,6 +26,8 @@ function generateOtp(): string {
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
+
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
@@ -100,7 +104,12 @@ export class AuthService {
     const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000);
     await this.usersService.setOtp(String(user._id), code, expiresAt);
 
-    this.notificationsService.sendOtpEmail(user.email, user.name, code).catch(() => null);
+    try {
+      await this.notificationsService.sendOtpEmail(user.email, user.name, code);
+    } catch (err) {
+      this.logger.error(`OTP email failed for ${user.email}`, (err as Error).message);
+      throw new InternalServerErrorException('Failed to send sign-in code. Please try again.');
+    }
 
     return { message: 'If that email is registered, a code has been sent.' };
   }
