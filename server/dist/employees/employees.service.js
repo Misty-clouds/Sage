@@ -24,12 +24,14 @@ let EmployeesService = class EmployeesService {
     constructor(employeeModel) {
         this.employeeModel = employeeModel;
     }
-    async createFromInvite(orgId, name, email, roleTitle) {
+    async createFromInvite(orgId, name, email, roleTitle, accountNumber, phone) {
         return this.employeeModel.create({
             orgId: new mongoose_2.Types.ObjectId(orgId),
             name,
             email,
             roleTitle,
+            accountNumber: accountNumber ?? null,
+            phone: phone ?? null,
             status: enums_1.EmployeeStatus.PENDING,
         });
     }

@@ -9,7 +9,7 @@ export interface ImportResult {
 export declare class EmployeesService {
     private employeeModel;
     constructor(employeeModel: Model<EmployeeDocument>);
-    createFromInvite(orgId: string, name: string, email: string, roleTitle: string): Promise<EmployeeDocument>;
+    createFromInvite(orgId: string, name: string, email: string, roleTitle: string, accountNumber?: string, phone?: string): Promise<EmployeeDocument>;
     findAll(orgId: string, status?: EmployeeStatus, search?: string, page?: number, limit?: number, allOrgs?: boolean): Promise<{
         data: EmployeeDocument[];
         total: number;

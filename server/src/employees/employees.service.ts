@@ -34,12 +34,16 @@ export class EmployeesService {
     name: string,
     email: string,
     roleTitle: string,
+    accountNumber?: string,
+    phone?: string,
   ): Promise<EmployeeDocument> {
     return this.employeeModel.create({
       orgId: new Types.ObjectId(orgId),
       name,
       email,
       roleTitle,
+      accountNumber: accountNumber ?? null,
+      phone: phone ?? null,
       status: EmployeeStatus.PENDING,
     }) as Promise<EmployeeDocument>;
   }

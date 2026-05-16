@@ -74,7 +74,7 @@ export class AuthService {
     await this.usersService.createInvited(dto.name, dto.email, role, inviter.orgName, orgId);
 
     // Create a payroll Employee record so the person appears in the employees list
-    await this.employeesService.createFromInvite(orgId, dto.name, dto.email, dto.role);
+    await this.employeesService.createFromInvite(orgId, dto.name, dto.email, dto.role, dto.accountNumber, dto.phone);
 
     // Send welcome email — fire and forget so the response is fast
     this.notificationsService.sendWelcomeEmail(dto.email, dto.name, dto.role).catch(() => null);

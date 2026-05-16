@@ -22,6 +22,9 @@ class InviteDto {
     name;
     email;
     role;
+    accountNumber;
+    phone;
+    salary;
 }
 exports.InviteDto = InviteDto;
 __decorate([
@@ -41,4 +44,22 @@ __decorate([
     (0, class_validator_1.IsEnum)(InviteRole),
     __metadata("design:type", String)
 ], InviteDto.prototype, "role", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InviteDto.prototype, "accountNumber", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InviteDto.prototype, "phone", void 0);
+__decorate([
+    (0, swagger_1.ApiPropertyOptional)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], InviteDto.prototype, "salary", void 0);
 //# sourceMappingURL=invite.dto.js.map

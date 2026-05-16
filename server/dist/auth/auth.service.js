@@ -101,7 +101,7 @@ let AuthService = class AuthService {
         const orgId = inviter.orgId?.toString() || String(inviter._id);
         const role = dto.role === 'auditor' ? enums_1.UserRole.AUDITOR : enums_1.UserRole.EMPLOYEE;
         await this.usersService.createInvited(dto.name, dto.email, role, inviter.orgName, orgId);
-        await this.employeesService.createFromInvite(orgId, dto.name, dto.email, dto.role);
+        await this.employeesService.createFromInvite(orgId, dto.name, dto.email, dto.role, dto.accountNumber, dto.phone);
         this.notificationsService.sendWelcomeEmail(dto.email, dto.name, dto.role).catch(() => null);
         return { message: `Invitation sent to ${dto.email}.` };
     }

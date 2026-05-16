@@ -34,6 +34,9 @@ export interface InvitePayload {
   name: string;
   email: string;
   role: 'auditor' | 'employee';
+  accountNumber?: string;
+  phone?: string;
+  salary?: string;
 }
 
 export interface RequestOtpPayload {

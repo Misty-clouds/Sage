@@ -496,7 +496,14 @@ function ManualMode() {
     setApiError(null);
     setLoading(true);
     try {
-      await authApi.invite({ name: form.fullName, email: form.email, role: form.userRole });
+      await authApi.invite({
+        name: form.fullName,
+        email: form.email,
+        role: form.userRole,
+        accountNumber: generateAccountNumber(),
+        phone: form.phone || undefined,
+        salary: form.salary || undefined,
+      });
       setSubmitted(true);
       setRefreshKey(k => k + 1);
     } catch (err) {
